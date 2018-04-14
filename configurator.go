@@ -111,6 +111,13 @@ type RedisConfig struct {
 	DBName		string	`json:"db_name"`
 }
 
+type CDNHostInfo struct {
+	Hostname	string  `json:"hostname`
+	Port		string  `json:"port"`
+	BaseURL		string  `json:"base_url"`
+	Protocol	string	`json:"protocol"`
+}
+
 type Configurations struct {
 	ServerConfig	GrpcServerConfig 	`json:"server_config"`
 	ClientConfig 	[]GrpcClientConfig	`json:"client_config"`
@@ -120,6 +127,7 @@ type Configurations struct {
 	LockerConfig	ZookeeperLocker		`json:"locker_config"`
 	FileStoreConfig FsConfig		`json:"fs_config"`
 	Proxy 		ProxyConfig		`json:"proxy_config"`
+	CDNInfo		CDNHostInfo		`json:"cdn_config"`
 	Payments 	[]PaymentProvider	`json:"payment_providers"`
 	RedisDB 	RedisConfig		`json:"redis_config"`
 	//Non-json fields.
