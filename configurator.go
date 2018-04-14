@@ -97,6 +97,20 @@ type ProxyConfig struct {
 	Port		string	`json:"port"`
 }
 
+type PaymentProvider struct {
+	Provider   string `json:"provider"`
+	Secret     string `json:"secret"`
+	MerchId    string `json:"merch_id"`
+	PublicKey  string `json:"pub_key"`
+	PrivateKey string `json:"priv_key"`
+}
+
+type RedisConfig struct {
+	Hostname	string	`json:"hostname"`
+	Port		int	`json:"port"`
+	DBName		string	`json:"db_name"`
+}
+
 type Configurations struct {
 	ServerConfig	GrpcServerConfig 	`json:"server_config"`
 	ClientConfig 	[]GrpcClientConfig	`json:"client_config"`
@@ -106,6 +120,8 @@ type Configurations struct {
 	LockerConfig	ZookeeperLocker		`json:"locker_config"`
 	FileStoreConfig FsConfig		`json:"fs_config"`
 	Proxy 		ProxyConfig		`json:"proxy_config"`
+	Payments 	[]PaymentProvider	`json:"payment_providers"`
+	RedisDB 	RedisConfig		`json:"redis_config"`
 	//Non-json fields.
 	client_map	map[string] *RpcClientPool
 }
