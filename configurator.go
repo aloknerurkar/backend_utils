@@ -555,6 +555,49 @@ func (dbConf *PostgresDBConfig) CreatePQDB() (*sql.DB, error) {
 	return dbConf.OpenDB()
 }
 
+func (dbConf *PostgresDBConfig) RemovePQDB() error {
+	open_str := fmt.Sprintf("host=%s port=%d user=%s password=%s sslmode=disable",
+		dbConf.Hostname, dbConf.Port, dbConf.Username, dbConf.Password)
+
+	dbP, err := sql.Open("postgres", open_str)
+	if err != nil {
+		log.Printf("Failed to open postgres. Open String:%s", open_str)
+		return err
+	}
+
+	err = dbP.Ping()
+	if err != nil {
+		log.Printf("Failed to ping postgres. Open String:%s", open_str)
+		return err
+	}
+
+	_, err = dbP.Exec("REVOKE CONNECT ON DATABASE " + dbConf.DBName + " FROM public")
+	if err != nil {
+		log.Printf("Failed to revoke database connections %s", dbConf.DBName)
+		return err
+	}
+
+	_, err = dbP.Exec("SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity " +
+		"WHERE pg_stat_activity.datname = '" + dbConf.DBName + "'")
+	if err != nil {
+		log.Printf("Failed to terminate database connections %s", dbConf.DBName)
+		return err
+	}
+
+	_, err = dbP.Exec("DROP DATABASE " + dbConf.DBName)
+	if err != nil {
+		log.Printf("Failed to drop postgres database %s", dbConf.DBName)
+		return err
+	}
+
+	err = dbP.Close()
+	if err != nil {
+		log.Println("Failed to close postgres db after creation.")
+		return err
+	}
+	return nil
+}
+
 func (c *ProxyConfig) Valid() bool {
 	if len(c.Endpoint) == 0 {
 		return false
