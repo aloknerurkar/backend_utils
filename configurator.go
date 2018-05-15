@@ -84,7 +84,8 @@ type DumbDBConfig struct {
 	DBPath		string	`json:"db_path"`
 }
 
-type ZookeeperLocker struct {
+type LockerConfig struct {
+	Handler 	string	 `json:"handler"`
 	Address 	[]string `json:"address"`
 }
 
@@ -124,7 +125,7 @@ type Configurations struct {
 	PostgresDB	PostgresDBConfig	`json:"postgres_db"`
 	DumbDB 		DumbDBConfig		`json:"dumb_db"`
 	Emailer		EmailerConfig		`json:"emailer"`
-	LockerConfig	ZookeeperLocker		`json:"locker_config"`
+	Locker		LockerConfig		`json:"locker_config"`
 	FileStoreConfig FsConfig		`json:"fs_config"`
 	Proxy 		ProxyConfig		`json:"proxy_config"`
 	CDNInfo		CDNHostInfo		`json:"cdn_config"`
