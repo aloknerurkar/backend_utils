@@ -70,7 +70,7 @@ func BufferStrings(args ...string) string {
 }
 
 func RandStringBytes(n int) string {
-	r.Seed(time.Now().Unix())
+	r.Seed(time.Now().Unix() + time.Now().UnixNano())
 	b := make([]byte, n)
 	for i := range b {
 		b[i] = letterBytes[r.Int63() % int64(len(letterBytes))]
